@@ -3,85 +3,115 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Био — Eldac</title>
+<title>Био — @Eeldac</title>
 <style>
     body {
         font-family: 'Segoe UI', Tahoma, sans-serif;
-        background: linear-gradient(135deg, #ece9e6, #ffffff);
+        background: #000;
+        color: #fff;
         margin: 0;
         padding: 0;
+    }
+    header {
+        background: #111;
+        padding: 15px;
+        text-align: center;
+        border-bottom: 2px solid #0ff;
+    }
+    header h1 {
+        color: #0ff;
+        margin: 0;
+        font-size: 24px;
+    }
+    nav {
         display: flex;
         justify-content: center;
-        align-items: flex-start;
-        min-height: 100vh;
+        background: #111;
+        border-bottom: 1px solid #0ff;
     }
-    .container {
+    nav a {
+        color: #0ff;
+        padding: 15px;
+        text-decoration: none;
+        font-size: 16px;
+    }
+    nav a:hover {
+        background: #222;
+    }
+    main {
         max-width: 800px;
-        background: #fff;
-        margin: 30px;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        margin: auto;
+        padding: 15px;
     }
-    h1 {
-        text-align: center;
-        color: #333;
-    }
-    .bio {
-        font-size: 18px;
-        line-height: 1.6;
+    section {
         margin-bottom: 20px;
+        padding: 15px;
+        background: #111;
+        border-radius: 8px;
     }
-    .status {
-        font-weight: bold;
-        margin-bottom: 20px;
+    section h2 {
+        color: #0ff;
+        margin-top: 0;
+        font-size: 20px;
+    }
+    .bio p, .quotes p, .friends p, .channels p {
+        font-size: 16px;
+        line-height: 1.4;
     }
     .cats {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 8px;
         justify-content: center;
     }
     .cats img {
-        max-width: 200px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        max-width: 150px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
     a {
-        color: #0077cc;
-        text-decoration: none;
-    }
-    a:hover {
-        text-decoration: underline;
+        color: #0ff;
     }
 </style>
 </head>
 <body>
-<div class="container">
-    <h1>Био — Eldac</h1>
-    <div class="bio">
-        <p>Привет! Меня зовут Eldac. Я живу в Украине уже много лет. У меня есть 2 кота 🐱🐱.</p>
-        <p>Мой Telegram: <a href="https://t.me/myrcalkapov" target="_blank">@myrcalkapov</a></p>
-    </div>
-    <div class="status">
-        Статус: <span id="onlineStatus">Загрузка...</span>
-    </div>
-    <div class="cats">
+<header>
+    <h1>Био — @Eeldac</h1>
+</header>
+<nav>
+    <a href="#bio">Обо мне</a>
+    <a href="#quotes">Цитаты</a>
+    <a href="#friends">Друзья</a>
+    <a href="#channels">Каналы</a>
+    <a href="#mychannels">Мои каналы</a>
+</nav>
+<main>
+    <section id="bio" class="bio">
+        <h2>Обо мне</h2>
+        <p>Привет! Меня зовут @Eeldac. Мне 13 лет. Я живу в Украине и люблю технологии 📱✨. У меня есть 2 милых кота 😸🐾.</p>
+    </section>
+    <section id="quotes" class="quotes">
+        <h2>Цитаты</h2>
+        <p>“Жизнь — это то, что происходит, пока мы строим планы.”</p>
+        <p>“Учись сегодня, чтобы завтра было проще.”</p>
+    </section>
+    <section id="friends" class="friends">
+        <h2>Друзья</h2>
+        <p>@greenoscreator</p>
+    </section>
+    <section id="channels" class="channels">
+        <h2>Каналы</h2>
+        <p>@Eeldac</p>
+    </section>
+    <section id="mychannels" class="mychannels">
+        <h2>Мои каналы</h2>
+        <p>@Eeldac</p>
+    </section>
+    <section class="cats">
+        <h2>Мои коты</h2>
         <img src="https://telegraphoto.site/images/78199679-1e7b-4f37-817e-f7e9965a3d92.jpg" alt="Кот 1">
         <img src="https://telegraphoto.site/images/a3b26df5-724c-4f79-bd27-986fc19ac041.jpg" alt="Кот 2">
-    </div>
-</div>
-<script>
-    async function checkStatus() {
-        try {
-            // Здесь можно реализовать проверку через Telegram API
-            document.getElementById("onlineStatus").innerText = "Онлайн"; // пример
-        } catch (err) {
-            document.getElementById("onlineStatus").innerText = "Офлайн";
-        }
-    }
-    checkStatus();
-    setInterval(checkStatus, 5000);
-</script>
+    </section>
+</main>
 </body>
-</html>
+    </html>
