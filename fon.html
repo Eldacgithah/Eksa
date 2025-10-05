@@ -1,1 +1,242 @@
-Тест
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>fon</title>
+<style>
+  :root{
+    --blue:#00a8ff;
+    --blue-outline: rgba(0,168,255,0.18);
+    --green:#39ff7a;
+    --bg:#001218;
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    padding:0;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(0,30,40,0.45), transparent 10%),
+                radial-gradient(900px 450px at 90% 90%, rgba(0,12,18,0.5), transparent 12%),
+                var(--bg);
+    overflow:hidden;
+  }
+
+  /* контейнер для кружков — не мешает кликам на страницу */
+  #dots-wrap{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .dot{
+    position:absolute;
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    transform: translate(-50%,-50%) scale(1);
+    will-change: transform, filter, opacity;
+    filter: blur(6px) saturate(120%);
+    background: radial-gradient(circle at 35% 30%, rgba(0,168,255,0.95) 0%, rgba(0,168,255,0.45) 30%, rgba(0,168,255,0.18) 60%, rgba(0,168,255,0.06) 100%);
+    box-shadow: 0 0 40px 8px var(--blue-outline), inset 0 0 30px rgba(255,255,255,0.02);
+    opacity:0.85;
+    transition: transform 350ms cubic-bezier(.2,.9,.3,1), box-shadow 250ms, background 250ms, filter 250ms, opacity 250ms;
+  }
+
+  .dot.small{ width:80px; height:80px; }
+  .dot.large{ width:160px; height:160px; }
+
+  /* лёгкое плавание */
+  @keyframes floaty {
+    0%{ transform: translate(-50%,-50%) translateY(-6px) scale(1); }
+    50%{ transform: translate(-50%,-50%) translateY(6px) scale(1.02); }
+    100%{ transform: translate(-50%,-50%) translateY(-6px) scale(1); }
+  }
+
+  /* курсорный зелёный круг */
+  #cursor-dot{
+    position:fixed;
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    transform: translate(-50%,-50%) scale(1);
+    pointer-events:none;
+    z-index:1;
+    background: radial-gradient(circle at 40% 40%, var(--green) 0%, rgba(57,255,122,0.55) 35%, rgba(57,255,122,0.12) 60%, transparent 100%);
+    box-shadow: 0 0 20px rgba(57,255,122,0.25), 0 0 8px rgba(57,255,122,0.08) inset;
+    transition: width 120ms ease, height 120ms ease, opacity 120ms, transform 120ms;
+    opacity:0;
+    mix-blend-mode: screen;
+  }
+
+  /* когда навели курсор на .dot — она выделяется */
+  .dot.hovered{
+    background: radial-gradient(circle at 40% 40%, var(--green) 0%, rgba(57,255,122,0.45) 30%, rgba(0,168,255,0.06) 60%, transparent 100%);
+    box-shadow: 0 0 60px 18px rgba(57,255,122,0.12), 0 0 30px rgba(57,255,122,0.08) inset;
+    transform: translate(-50%,-50%) scale(1.12);
+    filter: blur(3px) saturate(150%);
+    opacity:1;
+  }
+</style>
+</head>
+<body>
+<div id="dots-wrap" aria-hidden="true"></div>
+<div id="cursor-dot" aria-hidden="true"></div>
+
+<script>
+(function(){
+  const wrap = document.getElementById('dots-wrap');
+  const cursor = document.getElementById('cursor-dot');
+  let dots = [];
+  let animationIds = new Map();
+
+  function calculateCount(){
+    const w = window.innerWidth;
+    const base = Math.floor(w / 100);
+    return Math.max(2, Math.min(20, base));
+  }
+
+  function rand(min,max){ return Math.random()*(max-min)+min; }
+
+  function clearDots(){
+    animationIds.forEach(id => cancelAnimationFrame(id));
+    animationIds.clear();
+    dots.forEach(d => d.remove());
+    dots = [];
+    wrap.innerHTML = '';
+  }
+
+  function createDot(i, count){
+    const el = document.createElement('div');
+    el.className = 'dot';
+    // size variety
+    const sizeChoice = Math.random();
+    if(sizeChoice < 0.33) el.classList.add('small');
+    else if(sizeChoice > 0.9) el.classList.add('large');
+
+    // initial position (use percentage so responsive)
+    const left = rand(5,95);
+    const top = rand(8,92);
+    el.style.left = left + '%';
+    el.style.top = top + '%';
+    el.style.opacity = (rand(0.6,0.95)).toFixed(2);
+    el.style.animation = `floaty ${rand(6,12).toFixed(1)}s ease-in-out ${rand(0,4).toFixed(2)}s infinite`;
+    // subtle random movement via rAF
+    let vx = rand(-0.05,0.05);
+    let vy = rand(-0.05,0.05);
+    let pos = { x: (left/100)*window.innerWidth, y: (top/100)*window.innerHeight };
+    let size = el.offsetWidth || 120;
+
+    // attach hover handlers to switch color (but still pointer-events none on container, so enable for dots)
+    el.style.pointerEvents = 'auto';
+    el.addEventListener('mouseenter', ()=> {
+      el.classList.add('hovered');
+      cursor.style.width = '120px';
+      cursor.style.height = '120px';
+      cursor.style.opacity = '0.18';
+    });
+    el.addEventListener('mouseleave', ()=> {
+      el.classList.remove('hovered');
+      cursor.style.width = '36px';
+      cursor.style.height = '36px';
+      cursor.style.opacity = '0';
+    });
+
+    wrap.appendChild(el);
+    dots.push(el);
+
+    let last = performance.now();
+    function frame(now){
+      const dt = Math.min(40, now - last);
+      last = now;
+      pos.x += vx * dt;
+      pos.y += vy * dt;
+
+      // bounce inside viewport with padding so they don't fully disappear
+      const pad = 40;
+      if(pos.x < pad){ pos.x = pad; vx = Math.abs(vx); }
+      if(pos.x > window.innerWidth - pad){ pos.x = window.innerWidth - pad; vx = -Math.abs(vx); }
+      if(pos.y < pad){ pos.y = pad; vy = Math.abs(vy); }
+      if(pos.y > window.innerHeight - pad){ pos.y = window.innerHeight - pad; vy = -Math.abs(vy); }
+
+      // small random drift changes
+      if(Math.random() < 0.01){ vx += rand(-0.02,0.02); vy += rand(-0.02,0.02); vx = Math.max(-0.2, Math.min(0.2, vx)); vy = Math.max(-0.2, Math.min(0.2, vy)); }
+
+      // apply position as percentages for responsiveness
+      el.style.left = (pos.x / window.innerWidth * 100) + '%';
+      el.style.top = (pos.y / window.innerHeight * 100) + '%';
+
+      // subtle scale pulsing
+      const scale = 1 + Math.sin(now/1000 + i) * 0.03;
+      el.style.transform = `translate(-50%,-50%) scale(${scale.toFixed(3)})`;
+
+      animationIds.set(el, requestAnimationFrame(frame));
+    }
+    animationIds.set(el, requestAnimationFrame(frame));
+  }
+
+  function buildDots(){
+    clearDots();
+    const count = calculateCount();
+    for(let i=0;i<count;i++) createDot(i,count);
+  }
+
+  // initial
+  buildDots();
+
+  // rebuild on resize (debounced)
+  let resizeTimer = null;
+  window.addEventListener('resize', ()=>{
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      buildDots();
+    }, 180);
+  });
+
+  // cursor follow
+  let mouseVisible = false;
+  window.addEventListener('mousemove', (e)=>{
+    const x = e.clientX, y = e.clientY;
+    cursor.style.left = x + 'px';
+    cursor.style.top = y + 'px';
+    if(!mouseVisible){
+      mouseVisible = true;
+      cursor.style.opacity = '0.18';
+    }
+    // small grow when moving faster
+    // store last positions
+    if(!window._lastMouse){
+      window._lastMouse = {x,y,t:performance.now()};
+      return;
+    }
+    const now = performance.now();
+    const dt = Math.max(8, now - window._lastMouse.t);
+    const dist = Math.hypot(x - window._lastMouse.x, y - window._lastMouse.y);
+    const speed = dist / dt;
+    const extra = Math.min(1.6, 1 + speed*0.8);
+    cursor.style.transform = `translate(-50%,-50%) scale(${extra.toFixed(2)})`;
+    window._lastMouse = {x,y,t:now};
+  });
+
+  // hide cursor dot when leaving window
+  window.addEventListener('mouseleave', ()=>{
+    cursor.style.opacity = '0';
+    mouseVisible = false;
+  });
+
+  // also allow touch — show dot at touch point briefly
+  window.addEventListener('touchstart', (e)=>{
+    const t = e.touches[0];
+    cursor.style.left = t.clientX + 'px';
+    cursor.style.top = t.clientY + 'px';
+    cursor.style.opacity = '0.18';
+  }, {passive:true});
+  window.addEventListener('touchend', ()=> { cursor.style.opacity = '0'; });
+
+  // make sure dots don't block page interactions (they have pointer-events none on container,
+  // but individual dots enable pointer to allow hover detection)
+  // keep this file minimal — done.
+})();
+</script>
+</body>
+                                         </html>
