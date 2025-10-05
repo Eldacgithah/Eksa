@@ -3,10 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>@Elayder — Био</title>
-
+<title>@Elaydex — Био</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
-
 <style>
 html, body {
     margin: 0;
@@ -16,8 +14,6 @@ html, body {
     font-family: 'Orbitron', sans-serif;
     color: #e0e0e0;
 }
-
-/* Фон через iframe */
 #background {
     position: fixed;
     top: 0; left: 0;
@@ -26,136 +22,101 @@ html, body {
     border: none;
     z-index: 0;
 }
-
-/* Контент поверх */
 #content {
     position: relative;
     z-index: 1;
     overflow-y: auto;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
-}
-
-header {
-    background: rgba(0,0,0,0.8);
-    border-bottom: 2px solid #00eaff;
-    text-align: center;
-    padding: 20px;
-    text-transform: uppercase;
-}
-
-header h1 {
-    color: #00eaff;
-    font-size: clamp(20px, 4vw, 28px);
-    margin: 0;
-}
-
-nav {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    background: rgba(0,0,0,0.6);
-    border-bottom: 1px solid #00eaff;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding: 30px 10px;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(6px);
 }
-
-nav a {
-    color: #00eaff;
-    padding: 12px 18px;
-    text-decoration: none;
-    transition: background 0.3s;
-}
-
-nav a:hover {
-    background: rgba(0, 234, 255, 0.1);
-}
-
-main {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-}
-
-section {
-    margin-bottom: 25px;
+.window {
+    width: 90%;
+    max-width: 600px;
     background: rgba(10,10,10,0.8);
-    border-radius: 10px;
+    border: 1px solid #00eaff;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,234,255,0.15);
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 234, 255, 0.1);
+    text-align: center;
 }
-
-section h2 {
+.window h2 {
     color: #00eaff;
     border-bottom: 1px solid #00eaff;
     padding-bottom: 8px;
     margin-top: 0;
+    font-size: 20px;
 }
-
+.window p {
+    font-size: 16px;
+    line-height: 1.4;
+    margin: 10px 0;
+}
+button {
+    background: #00eaff;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+button:hover {
+    background: #00bcd4;
+}
 .cats {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
     justify-content: center;
+    gap: 10px;
 }
-
 .cats img {
     width: 45%;
     max-width: 180px;
     border-radius: 10px;
     transition: transform 0.3s, box-shadow 0.3s;
 }
-
 .cats img:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(0, 234, 255, 0.5);
+    box-shadow: 0 0 20px rgba(0,234,255,0.5);
 }
 </style>
 </head>
-
 <body>
 <iframe id="background" src="fon.html"></iframe>
-
 <div id="content">
-<header>
-    <h1>@Elayder — Био</h1>
-</header>
-<nav>
-    <a href="#bio">Обо мне</a>
-    <a href="#friends">Друзья</a>
-    <a href="#channels">Каналы где я админ</a>
-    <a href="#mychannels">Мои каналы</a>
-</nav>
-
-<main>
-    <section id="bio">
-        <h2>Обо мне</h2>
-        <p>Привет! Меня зовут <strong>@Elayder</strong>. Мне 13 лет, я живу в Украине 🇺🇦 и увлекаюсь технологиями 📱⚙️.  
-        У меня есть кот, кошечка и собака 🐾🐕 — мои лучшие друзья!</p>
-    </section>
-
-    <section id="friends">
-        <h2>Друзья</h2>
-        <p>@greenoscreator<br>@Vknecromanser</p>
-    </section>
-
-    <section id="channels">
-        <h2>Каналы где я админ</h2>
-        <p>Нет</p>
-    </section>
-
-    <section id="mychannels">
-        <h2>Мои каналы</h2>
-        <p>Нет</p>
-    </section>
-
-    <section class="cats">
-        <h2>Мои животные</h2>
+<div class="window">
+    <h2>Обо мне</h2>
+    <p>Привет! Я <strong>@Elaydex</strong>, живу в Украине 🇺🇦 и увлекаюсь технологиями 📱⚙️.  
+    У меня есть кот, кошечка и собака 🐾🐕 — мои любимцы!</p>
+</div>
+<div class="window">
+    <h2>Друзья</h2>
+    <p>@greenoscreator<br>@Vknecromanser</p>
+</div>
+<div class="window">
+    <h2>Каналы где я админ</h2>
+    <button onclick="window.open('https://t.me/Elaydex','_blank')">Мой Telegram</button>
+</div>
+<div class="window">
+    <h2>Мои каналы</h2>
+    <button onclick="window.open('https://t.me/Elaydex','_blank')">Перейти</button>
+</div>
+<div class="window">
+    <h2>Мои животные</h2>
+    <div class="cats">
         <img src="https://telegraphoto.site/images/4a7df5e2-bf8c-4681-92f7-e345dd4c363d.jpg" alt="Собака 1">
         <img src="https://telegraphoto.site/images/35aa4beb-0986-4312-a0df-b1817e19ecdb.jpg" alt="Собака 2">
         <img src="https://telegraphoto.site/images/78199679-1e7b-4f37-817e-f7e9965a3d92.jpg" alt="Кот 1">
         <img src="https://telegraphoto.site/images/a3b26df5-724c-4f79-bd27-986fc19ac041.jpg" alt="Кот 2">
-    </section>
-</main>
+    </div>
+</div>
 </div>
 </body>
-        </html>
+</html>
