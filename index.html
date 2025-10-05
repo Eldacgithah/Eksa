@@ -57,7 +57,7 @@ html, body {
     line-height: 1.4;
     margin: 10px 0;
 }
-button {
+button, .friend-link {
     background: #00eaff;
     color: #000;
     border: none;
@@ -66,8 +66,10 @@ button {
     font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
+    display: inline-block;
+    text-decoration: none;
 }
-button:hover {
+button:hover, .friend-link:hover {
     background: #00bcd4;
 }
 .cats {
@@ -98,7 +100,9 @@ button:hover {
 </div>
 <div class="window">
     <h2>Друзья</h2>
-    <p>@greenoscreator<br>@Vknecromanser</p>
+    <a class="friend-link" href="https://t.me/greenoscreator" target="_blank">Рома</a>
+    <br><br>
+    <a class="friend-link" href="https://t.me/Vknecromanser" target="_blank">Некромансер</a>
 </div>
 <div class="window">
     <h2>Каналы где я админ</h2>
